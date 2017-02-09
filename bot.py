@@ -1,6 +1,6 @@
 #! /usr/local/bin/python
 import os
-
+from random import randint
 import zulip
 
 
@@ -9,12 +9,13 @@ class Bot():
         an optional caption or list of captions, and a list of the zulip streams it should be active in.
         it then posts a caption and a randomly selected gif in response to zulip messages.
      """
-    def __init__(self, zulip_username, zulip_api_key, key_word, subscribed_streams=None, zulip_site=None):
+    def __init__(self, zulip_username, zulip_api_key, key_word, subscribed_streams=None, zulip_site=None, megaphone_file=None):
         self.key_word = key_word.lower()
         self.subscribed_streams = subscribed_streams or []
         self.client = zulip.Client(zulip_username, zulip_api_key, site=zulip_site)
         self.client._register('get_users', method='GET', url='users')
         self.subscriptions = self.subscribe_to_streams()
+        self.megaphone = open(megaphone_file, 'a+').readlines()
 
     @property
     def streams(self):
@@ -58,7 +59,7 @@ class Bot():
             "type": msg['type'],
             "subject": msg["subject"],
             "to": msg_to,
-            "content": 'HELLO WORLD ITS SNOWING' #msg['body']
+            "content": self.megaphone[randint(0, len(self.megaphone)-1)],
         })
 
     def main(self):
@@ -83,6 +84,7 @@ if __name__ == "__main__":
     ZULIP_API_KEY = os.environ['ZULIP_API_KEY']
     ZULIP_SITE = os.getenv('ZULIP_RSVP_SITE', 'https://recurse.zulipchat.com')
     KEY_WORD = os.getenv('ZULIP_KEY_WORD', 'CAPSbot')
+    MEGAPHONE_FILE = os.getenv('MEGAPHONE_FILE', "megaphone.txt");
 
     SUBSCRIBED_STREAMS = []
     new_bot = Bot(
@@ -91,5 +93,6 @@ if __name__ == "__main__":
         KEY_WORD,
         SUBSCRIBED_STREAMS,
         ZULIP_SITE,
+        MEGAPHONE_FILE,
     )
     new_bot.main()
