@@ -10,7 +10,7 @@ class Bot():
         it then posts a caption and a randomly selected gif in response to zulip messages.
      """
     def __init__(self, zulip_username, zulip_api_key, key_word, subscribed_streams=None, zulip_site=None, megaphone_file=None):
-        self.key_word = key_word.lower()
+        self.key_word = key_word
         self.subscribed_streams = subscribed_streams or []
         self.client = zulip.Client(zulip_username, zulip_api_key, site=zulip_site)
         self.client._register('get_users', method='GET', url='users')
@@ -45,7 +45,7 @@ class Bot():
 
     def respond(self, message):
         """Now we have an event dict, we should analyze it completely."""
-        content = message['content'].lower()
+        content = message['content']
         if self.key_word in content:
             self.send_message(message) 
 
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     ZULIP_USERNAME = os.environ['ZULIP_USERNAME']
     ZULIP_API_KEY = os.environ['ZULIP_API_KEY']
     ZULIP_SITE = os.getenv('ZULIP_RSVP_SITE', 'https://recurse.zulipchat.com')
-    KEY_WORD = os.getenv('ZULIP_KEY_WORD', 'CAPSbot')
+    KEY_WORD = os.getenv('ZULIP_KEY_WORD', '@**CAPSbot**')
     MEGAPHONE_FILE = os.getenv('MEGAPHONE_FILE', "megaphone.txt");
 
     SUBSCRIBED_STREAMS = []
