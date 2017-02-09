@@ -2,7 +2,7 @@
 import os
 from random import randint
 import zulip
-
+import re
 
 class Bot():
     """ bot takes a zulip username and api key, a word or phrase to respond to, a search string for giphy,
@@ -15,7 +15,10 @@ class Bot():
         self.client = zulip.Client(zulip_username, zulip_api_key, site=zulip_site)
         self.client._register('get_users', method='GET', url='users')
         self.subscriptions = self.subscribe_to_streams()
-        self.megaphone = open(megaphone_file, 'a+').readlines()
+        self.megaphone_file = open(megaphone_file, 'a+')
+        self.megaphone = self.megaphone_file.read().split('\n')[:-1]
+        self.megaphone_dict = {x: True for x in self.megaphone}
+        print "started"
 
     @property
     def streams(self):
@@ -46,8 +49,18 @@ class Bot():
     def respond(self, message):
         """Now we have an event dict, we should analyze it completely."""
         content = message['content']
+
+        [self.add_CAPS_string(in_caps.strip()) for in_caps in re.findall(r"\b[A-Z,.!?\s]{3,}\b", content)]
+
         if self.key_word in content:
-            self.send_message(message) 
+            self.send_message(message)
+
+    def add_CAPS_string(self, string):
+        if not string in self.megaphone_dict:
+            self.megaphone_file.write(string + "\n")
+            self.megaphone.append(string)
+            self.megaphone_dict[string] = True
+            self.megaphone_file.flush()
 
     def send_message(self, msg):
         """Sends a message to zulip stream or user."""
