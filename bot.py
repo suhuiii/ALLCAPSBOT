@@ -49,8 +49,8 @@ class Bot():
     def respond(self, message):
         """Now we have an event dict, we should analyze it completely."""
         content = message['content']
-
-        [self.add_CAPS_string(in_caps.strip()) for in_caps in re.findall(r"\b[A-Z,.!?\s]{3,}\b", content)]
+        
+        [self.add_CAPS_string(in_caps.strip()) for in_caps in re.findall(r'(?:(?:\b[A-Z\']+\b)[ \.,!?]*){3,}', content)]
 
         if self.key_word in content:
             self.send_message(message)
