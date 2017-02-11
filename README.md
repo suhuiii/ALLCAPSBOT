@@ -21,12 +21,12 @@ export MEGAPHONE_FILE='megaphone.txt' # file I/O - application dependent. Remove
 ```
 3. Modify the method `respond` and `send_message` to make your bot do what you want. In the case of ALLCAPSBOT -
   1. In `respond`:
-    1. The bot listens to all events of type `message` (filtering of events is done in the method `process`)
-    2. If the content of `message` is checked to see if it matches the regex pattern for three Uppercase words which may end with punctuation
-    3. Matches are passed as an argument to the method `add_CAPS_string`, which checks if the string exists as a key in the dictionary. If the new string is unique, then it is added to the dictionary, appended to a list for random access and also written to a file
-    4. If content of message also contains keyword (in this case `@**bot-username**), call `send_message`
-  2. In `send_message`: In `self.client.send_message({..})`, change the value for the key `content` to send whatever you want!
-  The code for the above portion (and really all you need to change) looks like this - 
+    1. The bot listens to all events of type `message` (filtering of events is done in the method `process`)  
+    2. If the content of `message` is checked to see if it matches the regex pattern for three Uppercase words which may end with punctuation  
+    3. Matches are passed as an argument to the method `add_CAPS_string`, which checks if the string exists as a key in the dictionary. If the new string is unique, then it is added to the dictionary, appended to a list for random access and also written to a file  
+    4. If content of message also contains keyword (in this case `@**bot-username**), call `send_message`  
+  2. In `send_message`: In `self.client.send_message({..})`, change the value for the key `content` to send whatever you want!    
+The code for the above portion (and really all you need to change) looks like this - 
   ```
       def process(self, event):
         if event['type'] == 'message':
