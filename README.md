@@ -10,15 +10,14 @@ We chose to use Python and reference the existing [RSVPBot](https://github.com/k
 Getting a working bot was pretty easy with those two resources and the Zulip API, and the rest of it was mostly a discussion around the expected behavior (e.g. bot should only save strings that it hasn't seen, therefore we should use a dictionary).
 
 # To build your own bot
-1. Create a bot in zulip settings as shown [here](https://recurse.zulipchat.com/api/)
-2. Set up your environment variables based on what you have created above
-
-```
-export ZULIP_USERNAME="bot-username"
-export ZULIP_API_KEY="bot-apikey"
-export ZULIP_KEY_WORD="some keyword" # this should be what you want your bot to react to. can be a word (rsvp) or a tag (@**bot-username**)
-export MEGAPHONE_FILE='megaphone.txt' # file I/O - application dependent. Remove from constructor and call to constructor if not using..
-```
+1. Create a bot in zulip settings as shown [here](https://recurse.zulipchat.com/api/)  
+2. Set up your environment variables based on what you have created above  
+  ```
+  export ZULIP_USERNAME="bot-username"
+  export ZULIP_API_KEY="bot-apikey"
+  export ZULIP_KEY_WORD="some keyword" # this should be what you want your bot to react to. can be a word (rsvp) or a tag (@**bot-username**)
+  export MEGAPHONE_FILE='megaphone.txt' # file I/O - application dependent. Remove from constructor and call to constructor if not using..
+  ```
 3. Modify the method `respond` and `send_message` to make your bot do what you want. In the case of ALLCAPSBOT -
   1. In `respond`:
     1. The bot listens to all events of type `message` (filtering of events is done in the method `process`)  
