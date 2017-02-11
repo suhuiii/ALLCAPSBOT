@@ -27,7 +27,7 @@ Getting a working bot was pretty easy with those two resources and the Zulip API
   2. In `send_message`: In `self.client.send_message({..})`, change the value for the key `content` to send whatever you want!    
 The code for the above portion (and really all you need to change) looks like this - 
   ```
-      def process(self, event):
+    def process(self, event):
         if event['type'] == 'message':
             self.respond(event['message'])
 
